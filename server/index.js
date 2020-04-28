@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const compression = require("compression");
 const rid = require("connect-rid");
 const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 const cors = require("cors");
 const csurf = require("csurf");
 const errorhandler = require("errorhandler");
@@ -40,7 +41,7 @@ const app = express()
 		secret: process.env.APP_SESSION_KEY,
 		maxAge: 12 * 60 * 60 * 1000, // 12 hours
 		secure: true,
-	})
+	}))
 	.use(cors({
 		origin (origin, callback) {
 			// TODO: determine whitelist.
@@ -65,7 +66,7 @@ const app = express()
 	//.use(errorhandler())
 	//.options(`*`, cors())
 	.use("/doc",
-		express.status(${__dirname}/../doc`),
+		express.static(`${__dirname}/../doc`),
 		serveIndex(`${__dirname}/../doc`))
 	.use(`/`, router)
 
@@ -111,7 +112,9 @@ function stop () {
 }
 
 function shutdown () {
-	httpServer.close();
+	if (httpServer) {
+		httpServer.close();
+	}
 
 	if (arguments[1] === "uncaughtException") {
 		console.error("@app~shutdown error", arguments);
