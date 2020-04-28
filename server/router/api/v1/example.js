@@ -3,7 +3,7 @@
 
 const { basename } = require("path");
 const { Router } = require("express");
-const ctrl = require(`${process.env.PWD}/server/controllers/example.js`);
+//const ctrl = require(`${process.env.PWD}/server/controllers/example.js`);
 
 const BASE_FILE_NAME = basename(process.argv[0]);
 
